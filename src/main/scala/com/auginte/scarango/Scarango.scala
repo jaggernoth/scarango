@@ -98,7 +98,7 @@ class Scarango extends Actor with AkkaLogging {
       implicit val system = context.system
       val restApi = IO(Http)
       dbConnection = Some(restApi)
-      restApi ! Http.Connect("127.0.0.1", port = 8529)
+      restApi ! Http.Connect("10.0.0.10", port = 8529)
   }
 
   private def updateHost(connectionActor: ActorRef): Unit = {

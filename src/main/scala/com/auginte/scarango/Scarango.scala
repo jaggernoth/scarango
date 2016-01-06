@@ -12,6 +12,8 @@ import spray.http.{HttpMessage, HttpResponse}
 
 import scala.collection.immutable.Queue
 
+case class ScarangoHostConfig(host: String, port: Int);
+
 /**
  * Actor for ArrangoDB REST API.
  *
@@ -23,7 +25,7 @@ import scala.collection.immutable.Queue
  * For other errors, [[com.auginte.scarango.errors.ScarangoError]] is returned to client.
  * For client actor errors, debug information is saved to `akka` logs.
  */
-class Scarango extends Actor with AkkaLogging {
+class Scarango(implicit config: ScarangoHostConfig) extends Actor with AkkaLogging {
   private var connectionEstablished = false
   private var dbReadyToReceive = false
   // Not in the middle of transmission
@@ -98,7 +100,7 @@ class Scarango extends Actor with AkkaLogging {
       implicit val system = context.system
       val restApi = IO(Http)
       dbConnection = Some(restApi)
-      restApi ! Http.Connect("10.0.0.10", port = 8529)
+      restApi ! Http.Connect(config.host, config.port)
   }
 
   private def updateHost(connectionActor: ActorRef): Unit = {

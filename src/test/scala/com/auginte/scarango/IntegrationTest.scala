@@ -19,6 +19,7 @@ import scala.language.postfixOps
  * Testing integration with ArangoDB
  */
 class IntegrationTest extends AkkaSpec {
+  implicit val config = new ScarangoHostConfig("10.0.0.10", 8529)
   "In environment with real ArangoDB instance, driver" should {
 
     "get version of ArangoDB" in {
